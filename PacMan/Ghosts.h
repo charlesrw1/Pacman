@@ -27,5 +27,7 @@ const Dir enter_dir[4] = { UP, UP, LEFT, RIGHT };
 const sf::Vector2f corners[4] = { {31,0},{0,0},{31,31}, {0,31} };
 const int dot_counters[4] = { 0,0,30,60 };
 
+const int global_dot_limit[4] = { 0,7,17,32 };
+
 #endif // !GHOST_H
 

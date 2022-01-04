@@ -187,9 +187,15 @@ void HouseUpdate(Ghost& ghost)
 		break;
 	case HOMEBASE:
 		ghost.move_speed = inhome_speed;
+
 		// check timer if its time to leave
-		if (ghost.dot_counter >= dot_counters[ghost.type])
+		if (gState.using_global_counter) {
+			if (gState.global_dot_counter >= global_dot_limit[ghost.type])
+				ghost.target_state = LEAVEHOME;
+		}
+		else if (ghost.dot_counter >= dot_counters[ghost.type])
 			ghost.target_state = LEAVEHOME;
+
 		if (ghost.pos.y <= 14) {
 			ghost.pos.y = 14;
 			ghost.cur_dir = DOWN;
@@ -291,6 +297,10 @@ void SetGhostState(Ghost& ghost, TargetState new_state)
 		break;
 	default:
 		if (!ghost.in_house) {
+			// ghost reverses direction whenever changing states,
+			// except when coming from frightened
+			if (ghost.target_state != FRIGHTENED)
+				ghost.cur_dir = GetOppositeTile(ghost);
 			ghost.move_speed = ghost_speed;
 			ghost.target_state = new_state;
 		}

@@ -41,26 +41,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Pacman.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ghosts.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Animate.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Gameloop.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Animate.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Ghosts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pacman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

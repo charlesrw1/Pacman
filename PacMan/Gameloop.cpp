@@ -99,7 +99,7 @@ void ResetGhostsAndPlayer()
 	temp->target_state = CORNER;
 	temp->in_house = false;
 	temp->move_speed = ghost_speed;
-	temp->dot_counter = 0;
+	//temp->dot_counter = 0;
 	temp->enable_draw = true;
 
 	temp = gState.ghosts[1];
@@ -108,7 +108,7 @@ void ResetGhostsAndPlayer()
 	temp->target_state = HOMEBASE;
 	temp->in_house = true;
 	temp->move_speed = inhome_speed;
-	temp->dot_counter = 0;
+	//temp->dot_counter = 0;
 	temp->enable_draw = true;
 
 	temp = gState.ghosts[2];
@@ -117,7 +117,7 @@ void ResetGhostsAndPlayer()
 	temp->target_state = HOMEBASE;
 	temp->in_house = true;
 	temp->move_speed = inhome_speed;
-	temp->dot_counter = 0;
+	//temp->dot_counter = 0;
 	temp->enable_draw = true;
 
 	temp = gState.ghosts[3];
@@ -126,7 +126,7 @@ void ResetGhostsAndPlayer()
 	temp->target_state = HOMEBASE;
 	temp->in_house = true;
 	temp->move_speed = inhome_speed;
-	temp->dot_counter = 0;
+	//temp->dot_counter = 0;
 	temp->enable_draw = true;
 
 	gState.player->cur_dir = UP;
@@ -140,6 +140,11 @@ void ResetGhostsAndPlayer()
 	gState.wave_time = 0;
 
 	ResetPPelletFlash();
+
+	if (!gState.first_life)
+		gState.using_global_counter = true;
+	
+	gState.global_dot_counter = 0;
 }
 void ResetBoard()
 {
@@ -147,15 +152,35 @@ void ResetBoard()
 	InitBoard();
 
 	gState.pellets_left = 244;
+
+	gState.first_life = true;
+	gState.using_global_counter = false;
+	for (int i = 0; i < 4; i++)
+		gState.ghosts[i]->dot_counter = 0;
 }
 
 void IncrementGhostHouse()
 {
+	Ghost* first_ghost = nullptr;
+	// using global counter, increment it
+	if (gState.using_global_counter) {
+		gState.global_dot_counter++;
+	}
 	for (int i = 0; i < 4; i++) {
 		if (gState.ghosts[i]->target_state == HOMEBASE) {
-			gState.ghosts[i]->dot_counter++;
-			return;
+			first_ghost = gState.ghosts[i];
+			break;
 		}
+	}
+	if (first_ghost == nullptr) {
+		// no more ghosts in house, switch back to local counters
+		if (gState.using_global_counter) {
+			gState.using_global_counter = false;
+		}
+	}
+	// if not using global and ghost is in house, use local counter
+	else if(!gState.using_global_counter) {
+		first_ghost->dot_counter++;
 	}
 }
 void CheckPelletCollision()
@@ -211,6 +236,7 @@ void CheckGhostCollision()
 				gState.game_state = GAMELOSE;
 				gState.pause_time = 2000;
 				gState.player_lives -= 1;
+				gState.first_life = false;
 				StartPacManDeath();
 				StopSounds();
 				PlayDeathSound();
@@ -237,6 +263,9 @@ void UpdateWave(int ms_elapsed)
 }
 void UpdateEnergizerTime(int ms_elasped)
 {
+	if (gState.energizer_time <= 0)
+		return;
+
 	gState.energizer_time -= ms_elasped;
 	if (gState.energizer_time <= 0) {
 		SetAllGhostState(GetGlobalTarget());

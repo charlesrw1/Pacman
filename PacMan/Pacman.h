@@ -89,7 +89,7 @@ struct Player
 {
 	sf::Vector2f pos;
 	Dir cur_dir;
-	Dir prev_dir;
+	Dir correction;
 	Dir try_dir;
 
 	bool stopped;
@@ -109,6 +109,10 @@ struct GameState
 	int wave_counter = 0;
 
 	bool pellet_eaten = false;
+
+	bool first_life = true;
+	bool using_global_counter = false;
+	int global_dot_counter = 0;
 	
 	bool player_eat_ghost = false;
 	int ghosts_eaten_in_powerup = 0;

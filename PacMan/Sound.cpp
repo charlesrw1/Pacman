@@ -51,11 +51,11 @@ void PlayGameStart()
 	sounds->background.setBuffer(sounds->game_start);
 	sounds->background.play();
 }
-const float pitches[5] = { 0.75,0.87,1,0.13,0.25 };
+const float pitches[5] = { 0.75,0.87,1,1.13,1.25 };
 void UpdateGameSounds(int ms_elapsed)
 {
 	if (sstate.playing_death) {
-		if (sstate.death_timer <= total_death_time - 250 & sounds->death1.getStatus() != sf::SoundSource::Status::Playing) {
+		if (sstate.death_timer <= total_death_time - 250 && sounds->death1.getStatus() != sf::SoundSource::Status::Playing) {
 			sounds->death1.play();
 		}
 		sstate.death_timer -= ms_elapsed;
